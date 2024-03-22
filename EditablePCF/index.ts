@@ -105,17 +105,20 @@ export class EditablePCF implements ComponentFramework.StandardControl<IInputs, 
      * It is called by the framework prior to a control receiving new data.
      * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
      */
-    public getOutputs(): IOutputs
-    {
-        return {};
+
+    public getOutputs(): IOutputs {
+        return {
+            // If our name variable is null, return undefined instead
+            Name: this.name ?? undefined
+        };
     }
 
     /**
      * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
      * i.e. cancelling any pending remote calls, removing listeners, etc.
      */
-    public destroy(): void
-    {
-        // Add code to cleanup control if necessary
+    public destroy() {
+        // Remove the event listener we created in init
+        this.container.querySelector("button")!.removeEventListener("click", this.buttonClick);
     }
 }
